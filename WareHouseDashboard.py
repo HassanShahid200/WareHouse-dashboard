@@ -16,14 +16,7 @@ if uploaded_file is not None:
         df_helper = pd.read_excel(uploaded_file, sheet_name='Helper Table')
         
         # 2. Bridge the tables using the Helper Table
-        df_dispatch = pd.merge(
-            df_dispatch, 
-            df_helper[['Customer Code', 'Group']], 
-            left_on='CardCode', 
-            right_on='Customer Code', 
-            how='left'
-        )
-        
+        # Dispatch ALREADY has the 'Group' column, so we ONLY merge Recieved
         df_received = pd.merge(
             df_received, 
             df_helper[['Customer Name', 'Group']], 
@@ -59,6 +52,6 @@ if uploaded_file is not None:
             st.dataframe(received_summary, hide_index=True)
 
     except Exception as e:
-        st.error(f"Error reading the file: {e}. Please ensure the sheet names and columns match exactly.")
+        st.error(f"Error reading the file: '{e}'. Please ensure the sheet names and columns match exactly.")
 else:
     st.info("Waiting for file upload...")
